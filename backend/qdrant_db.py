@@ -54,7 +54,7 @@ def get_db(embeddings):
     if url and "localhost" in url:
         url = url.replace("localhost", "127.0.0.1")
 
-    client = QdrantClient(url=url, api_key=api_key, timeout=120)
+    client = QdrantClient(url=url, api_key=api_key, prefer_grpc=True)
 
     if not client.collection_exists(collection_name):
         client.create_collection(
