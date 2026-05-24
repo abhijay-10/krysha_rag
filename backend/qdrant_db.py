@@ -41,8 +41,8 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from langchain_qdrant import QdrantVectorStore
-# 1. FIXED: Changed import to use the cloud inference engine
-from langchain_huggingface import HuggingFaceInferenceEmbeddings 
+# Change your import on line 45 to this:
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 load_dotenv()
 
