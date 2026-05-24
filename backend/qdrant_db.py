@@ -41,7 +41,8 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from langchain_qdrant import QdrantVectorStore
-from langchain_huggingface import HuggingFaceEmbeddings
+# 1. FIXED: Changed import to use the cloud inference engine
+from langchain_huggingface import HuggingFaceInferenceEmbeddings 
 
 load_dotenv()
 
@@ -50,7 +51,6 @@ def get_db(embeddings):
     api_key = os.getenv("QDRANT_API_KEY")
     collection_name = "mahabharata_bot"
 
-    # Fix for [Errno 11001]: Bypass DNS lookup issues on Windows
     if url and "localhost" in url:
         url = url.replace("localhost", "127.0.0.1")
 
@@ -60,7 +60,7 @@ def get_db(embeddings):
         client.create_collection(
             collection_name=collection_name,
             vectors_config=models.VectorParams(
-                size=1024, # BGE-M3 dimension
+                size=1024, # BGE-M3 dimension is 1024
                 distance=models.Distance.COSINE
             ),
         )
