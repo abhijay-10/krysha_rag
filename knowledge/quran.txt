@@ -1,0 +1,3 @@
+Title: The Holy Quran
+Summary: The central religious text of Islam, believed by Muslims to be a revelation from God (Allah).
+Link: https://en.wikipedia.org/wiki/Quran

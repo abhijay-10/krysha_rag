@@ -1,0 +1,3 @@
+Title: The Holy Bible
+Summary: A collection of religious texts or scriptures sacred in Christianity, Judaism, Samaritanism, and many other faiths.
+Link: https://en.wikipedia.org/wiki/Bible
