@@ -1,6 +1,7 @@
-# Web Server
+# Web Server & Authentication
 fastapi
 uvicorn
+python-jose[cryptography]
 
 # Core LLM & Embeddings
 transformers
