@@ -3,7 +3,7 @@
 
 
 import os
-import ollama
+# import ollama
 import re
 import random
 from dotenv import load_dotenv
