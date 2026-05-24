@@ -1,4 +1,4 @@
-# Krysha AI – An Authentic and Emotionally Intelligent Spiritual Companion
+# Krysha AI – An Authentic & Emotionally Intelligent Spiritual Companion
 
 Krysha AI is an emotionally intelligent spiritual AI companion designed to provide personalized guidance, emotional support, and contextual conversations using Retrieval-Augmented Generation (RAG), voice interaction, and memory-aware AI systems.
 
