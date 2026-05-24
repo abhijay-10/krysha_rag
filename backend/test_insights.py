@@ -71,21 +71,49 @@ def test_diagnostics():
     
     print("\n--- RUNNING LOCAL MISTRAL INFERENCE (OLLAMA) ---")
     try:
-        response = ollama.chat(
-            model="mistral:latest",
+#         response = ollama.chat(
+#             model="mistral:latest",
+#             messages=[
+#                 {"role": "system", "content": sys_prompt},
+#                 {"role": "user", "content": user_content}
+#             ],
+#             options={
+#                 "temperature": 0.2,
+#                 "num_ctx": 2048,
+#                 "num_predict": 250,
+#                 "num_thread": 8
+#             }
+#         )
+#         print("\n--- SUCCESS: RECEIVED INSIGHT ---")
+#         print(response["message"]["content"].strip())
+
+        from groq import Groq
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": sys_prompt},
                 {"role": "user", "content": user_content}
             ],
-            options={
-                "temperature": 0.2,
-                "num_ctx": 2048,
-                "num_predict": 250,
-                "num_thread": 8
-            }
+            max_tokens=250,
+            temperature=0.2
         )
         print("\n--- SUCCESS: RECEIVED INSIGHT ---")
-        print(response["message"]["content"].strip())
+        print(response.choices[0].message.content.strip())
+        
+#         from huggingface_hub import InferenceClient
+#         client = InferenceClient(token=os.getenv("HUGGINGFACEHUB_API_TOKEN"))
+#         response = client.chat_completion(
+#             model="mistralai/Mistral-7B-Instruct-v0.3",
+#             messages=[
+#                 {"role": "system", "content": sys_prompt},
+#                 {"role": "user", "content": user_content}
+#             ],
+#             max_tokens=250,
+#             temperature=0.2
+#         )
+#         print("\n--- SUCCESS: RECEIVED INSIGHT ---")
+#         print(response.choices[0].message.content.strip())
     except Exception as e:
         print(f"\n--- ERROR DETECTED ---")
         print(e)

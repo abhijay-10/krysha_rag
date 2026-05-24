@@ -575,20 +575,46 @@ def get_tracker_insights(
         user_content += f"Distraction Level: {distraction_score}/10 due to {main_distraction or 'general distractions'}\n"
 
     try:
-        response = ollama.chat(
-            model="mistral:latest",
+#         response = ollama.chat(
+#             model="mistral:latest",
+#             messages=[
+#                 {"role": "system", "content": sys_prompt},
+#                 {"role": "user", "content": user_content}
+#             ],
+#             options={
+#                 "temperature": 0.2,
+#                 "num_ctx": 2048,
+#                 "num_predict": 250,
+#                 "num_thread": 8
+#             }
+#         )
+#         insight = response["message"]["content"].strip()
+
+        from groq import Groq
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": sys_prompt},
                 {"role": "user", "content": user_content}
             ],
-            options={
-                "temperature": 0.2,
-                "num_ctx": 2048,
-                "num_predict": 250,
-                "num_thread": 8
-            }
+            max_tokens=250,
+            temperature=0.2
         )
-        insight = response["message"]["content"].strip()
+        insight = response.choices[0].message.content.strip()
+        
+#         from huggingface_hub import InferenceClient
+#         client = InferenceClient(token=os.getenv("HUGGINGFACEHUB_API_TOKEN"))
+#         response = client.chat_completion(
+#             model="mistralai/Mistral-7B-Instruct-v0.3",
+#             messages=[
+#                 {"role": "system", "content": sys_prompt},
+#                 {"role": "user", "content": user_content}
+#             ],
+#             max_tokens=250,
+#             temperature=0.2
+#         )
+#         insight = response.choices[0].message.content.strip()
     except Exception as e:
         insight = f"May peace guide you. Even if we encounter moments of silence, focus on the presence of divine calmness today. (Error: {e})"
 

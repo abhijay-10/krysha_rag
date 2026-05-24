@@ -133,12 +133,32 @@ CRITICAL RULES:
 
 Query: {query}
 English Search Query:"""
-            response = ollama.chat(
-                model="gemma2:2b",
+#             response = ollama.chat(
+#                 model="gemma2:2b",
+#                 messages=[{"role": "user", "content": translation_prompt}],
+#                 options={"temperature": 0.0, "num_predict": 40}
+#             )
+#             translated = response["message"]["content"].strip()
+
+            from groq import Groq
+            client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+            response = client.chat.completions.create(
+                model="gemma2-9b-it",
                 messages=[{"role": "user", "content": translation_prompt}],
-                options={"temperature": 0.0, "num_predict": 40}
+                max_tokens=40,
+                temperature=0.01
             )
-            translated = response["message"]["content"].strip()
+            translated = response.choices[0].message.content.strip()
+            
+#             from huggingface_hub import InferenceClient
+#             client = InferenceClient(token=os.getenv("HUGGINGFACEHUB_API_TOKEN"))
+#             response = client.chat_completion(
+#                 model="mistralai/Mistral-7B-Instruct-v0.3",
+#                 messages=[{"role": "user", "content": translation_prompt}],
+#                 max_tokens=40,
+#                 temperature=0.01
+#             )
+#             translated = response.choices[0].message.content.strip()
             translated = re.sub(r'^["\']|["\']$', '', translated).strip()
             if translated:
                 print(f"Agentic Translation: '{query}' -> '{translated}'")
@@ -344,39 +364,73 @@ def ask_bot(query, mode="neutral", history=None, memory_context=None, voice_sanc
         chat_messages.append({"role": "user", "content": f"CONTEXT:\n{context}\n\nCURRENT QUESTION: {query}\n\n[CRITICAL RULE: You MUST directly and accurately answer the exact question asked in your very first sentence. If they ask 'who is the son of X', state the exact name immediately. Do NOT evade the question. Do NOT hallucinate. Do NOT just summarize the text. Rely on your own canonical knowledge if the text is insufficient.]{user_prompt_suffix}"})
 
         # 🚀 DYNAMIC PERSONA-BASED MODEL ROUTING
-        # Use gemma2:2b exclusively for warm, hyper-fast, highly multilingual Voice Sanctuary (voice_sanctuary=True)
-        # Use mistral:latest (MODEL) for all general question answering (both Scholar and Lord Krishna chatbot sessions)
-        active_model = "gemma2:2b" if voice_sanctuary else MODEL
-
-        # 🚀 FAST INFERENCE
-        try:
-            response = ollama.chat(
-                model=active_model,
-                messages=chat_messages,
-                options={
-                    "temperature": 0.3 if voice_sanctuary else (0.15 if mode == "krishna" else 0.1),
-                    "num_ctx": 2048,     # Optimized context window for faster prompt processing
-                    "num_predict": 250 if voice_sanctuary else (220 if mode == "krishna" else 300),  # Shorter, more punchy voice output
-                    "num_thread": 8,     # Forces multi-threading for faster CPU/GPU handoff
-                    "repeat_penalty": 1.2
-                }
-            )
-        except Exception as e:
-            # Safe fallback to mistral:latest if gemma2:2b is not pulled yet
-            print(f"gemma2:2b routing fallback triggered: {e}")
-            response = ollama.chat(
-                model=MODEL,
-                messages=chat_messages,
-                options={
-                    "temperature": 0.1,
-                    "num_ctx": 2048,
-                    "num_predict": 300,
-                    "num_thread": 8,
-                    "repeat_penalty": 1.2
-                }
-            )
+#         active_model = "gemma2:2b" if voice_sanctuary else MODEL
+# 
+#         # 🚀 FAST INFERENCE
+#         try:
+#             response = ollama.chat(
+#                 model=active_model,
+#                 messages=chat_messages,
+#                 options={
+#                     "temperature": 0.3 if voice_sanctuary else (0.15 if mode == "krishna" else 0.1),
+#                     "num_ctx": 2048,     # Optimized context window for faster prompt processing
+#                     "num_predict": 250 if voice_sanctuary else (220 if mode == "krishna" else 300),  # Shorter, more punchy voice output
+#                     "num_thread": 8,     # Forces multi-threading for faster CPU/GPU handoff
+#                     "repeat_penalty": 1.2
+#                 }
+#             )
+#         except Exception as e:
+#             # Safe fallback to mistral:latest if gemma2:2b is not pulled yet
+#             print(f"gemma2:2b routing fallback triggered: {e}")
+#             response = ollama.chat(
+#                 model=MODEL,
+#                 messages=chat_messages,
+#                 options={
+#                     "temperature": 0.1,
+#                     "num_ctx": 2048,
+#                     "num_predict": 300,
+#                     "num_thread": 8,
+#                     "repeat_penalty": 1.2
+#                 }
+#             )
+#         
+#         answer = response["message"]["content"].strip()
         
-        answer = response["message"]["content"].strip()
+        from groq import Groq
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        try:
+            # Use gemma2-9b-it for hyper-fast, empathetic voice responses
+            # Use llama-3.3-70b-versatile for standard, deep text answering
+            groq_model = "gemma2-9b-it" if voice_sanctuary else "llama-3.3-70b-versatile"
+            
+            response = client.chat.completions.create(
+                model=groq_model,
+                messages=chat_messages,
+                max_tokens=250 if voice_sanctuary else 300,
+                temperature=0.3 if voice_sanctuary else 0.15
+            )
+            answer = response.choices[0].message.content.strip()
+        except Exception as e:
+            print(f"Groq Inference Error: {e}")
+            answer = "I apologize, but my connection to the divine archives is currently interrupted. Please try again in a moment."
+        
+#         from huggingface_hub import InferenceClient
+#         client = InferenceClient(token=os.getenv("HUGGINGFACEHUB_API_TOKEN"))
+#         try:
+#             # Use gemma-2-2b-it for hyper-fast, empathetic voice responses
+#             # Use Mistral-7B for standard, deep text answering
+#             hf_model = "google/gemma-2-2b-it" if voice_sanctuary else "mistralai/Mistral-7B-Instruct-v0.3"
+#             
+#             response = client.chat_completion(
+#                 model=hf_model,
+#                 messages=chat_messages,
+#                 max_tokens=250 if voice_sanctuary else 300,
+#                 temperature=0.3 if voice_sanctuary else 0.15
+#             )
+#             answer = response.choices[0].message.content.strip()
+#         except Exception as e:
+#             print(f"HF Inference Error: {e}")
+#             answer = "I apologize, but my connection to the divine archives is currently interrupted. Please try again in a moment."
         
         # 🛡️ Safety Check: If model returned nothing, use a fallback
         if not answer:
