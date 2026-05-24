@@ -3,12 +3,14 @@ fastapi
 uvicorn
 python-jose[cryptography]
 passlib[bcrypt]
+python-multipart
 
 # Core LLM & Embeddings
 transformers
 sentence-transformers
 torch
 accelerate
+ollama
 
 # LangChain Ecosystem
 langchain
