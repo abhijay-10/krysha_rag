@@ -41,7 +41,6 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from langchain_qdrant import QdrantVectorStore
-# Change your import on line 45 to this:
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 load_dotenv()

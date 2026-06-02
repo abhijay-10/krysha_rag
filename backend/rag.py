@@ -143,7 +143,7 @@ English Search Query:"""
             from groq import Groq
             client = Groq(api_key=os.getenv("GROQ_API_KEY"))
             response = client.chat.completions.create(
-                model="gemma2-9b-it",
+                model="llama-3.1-8b-instant",
                 messages=[{"role": "user", "content": translation_prompt}],
                 max_tokens=40,
                 temperature=0.01
@@ -396,23 +396,36 @@ def ask_bot(query, mode="neutral", history=None, memory_context=None, voice_sanc
 #         
 #         answer = response["message"]["content"].strip()
         
-        from groq import Groq
-        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-        try:
-            # Use gemma2-9b-it for hyper-fast, empathetic voice responses
-            # Use llama-3.3-70b-versatile for standard, deep text answering
-            groq_model = "gemma2-9b-it" if voice_sanctuary else "llama-3.3-70b-versatile"
-            
-            response = client.chat.completions.create(
-                model=groq_model,
-                messages=chat_messages,
-                max_tokens=250 if voice_sanctuary else 300,
-                temperature=0.3 if voice_sanctuary else 0.15
-            )
-            answer = response.choices[0].message.content.strip()
-        except Exception as e:
-            print(f"Groq Inference Error: {e}")
-            answer = "I apologize, but my connection to the divine archives is currently interrupted. Please try again in a moment."
+        if voice_sanctuary:
+            try:
+                # Use locally installed gemma2:2b for hyper-fast, empathetic voice responses
+                response = ollama.chat(
+                    model="gemma2:2b",
+                    messages=chat_messages,
+                    options={
+                        "temperature": 0.3,
+                        "num_predict": 250,
+                    }
+                )
+                answer = response["message"]["content"].strip()
+            except Exception as e:
+                print(f"Ollama Inference Error: {e}")
+                answer = "I apologize, but my connection to the divine archives is currently interrupted. Please try again in a moment."
+        else:
+            from groq import Groq
+            client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+            try:
+                # Use llama-3.3-70b-versatile for standard, deep text answering
+                response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=chat_messages,
+                    max_tokens=300,
+                    temperature=0.15
+                )
+                answer = response.choices[0].message.content.strip()
+            except Exception as e:
+                print(f"Groq Inference Error: {e}")
+                answer = "I apologize, but my connection to the divine archives is currently interrupted. Please try again in a moment."
         
 #         from huggingface_hub import InferenceClient
 #         client = InferenceClient(token=os.getenv("HUGGINGFACEHUB_API_TOKEN"))
