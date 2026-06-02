@@ -18,7 +18,14 @@ embeddings = HuggingFaceEndpointEmbeddings(
     model="BAAI/bge-m3",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
 )
-db = get_db(embeddings)
+_db_instance = None
+
+def get_lazy_db():
+    global _db_instance
+    if _db_instance is None:
+        print("Initializing Qdrant DB connection and embedding model...")
+        _db_instance = get_db(embeddings)
+    return _db_instance
 MODEL = "mistral:latest"
 from prompt_router import get_modular_prompt
 
@@ -42,6 +49,7 @@ def init_reranker():
 threading.Thread(target=init_reranker, daemon=True).start()
 
 def get_contextual_retriever(query):
+    db = get_lazy_db()
     # Increase k to 10 to give the re-ranker a better selection pool
     vector_retriever = db.as_retriever(
         search_type="similarity_score_threshold",
@@ -312,6 +320,7 @@ def ask_bot(query, mode="neutral", history=None, memory_context=None, voice_sanc
             docs = retriever.invoke(english_search_query)
         except Exception as search_e:
             # Fallback k=10 for better candidate pool
+            db = get_lazy_db()
             docs = db.similarity_search(english_search_query, k=10)
             
         if not docs:
