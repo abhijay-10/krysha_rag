@@ -3,9 +3,14 @@ fastapi
 uvicorn
 python-jose[cryptography]
 passlib[bcrypt]
-python-multipart
 
-# LangChain Ecosystem & Cloud APIs
+# Core LLM & Embeddings
+sentence-transformers
+torch
+transformers
+accelerate
+
+# LangChain Ecosystem
 langchain
 langchain-core
 langchain-community
@@ -23,5 +28,6 @@ streamlit
 requests
 python-dotenv
 
-# PDF Parsing (Lightweight)
+# PDF OCR & Parsing
 pymupdf
+rapidocr-onnxruntime
