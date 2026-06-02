@@ -24,12 +24,22 @@ from prompt_router import get_modular_prompt
 
 # 🛡️ DIVINE RE-RANKER: The high-precision filter for 37,800+ chunks
 from sentence_transformers import CrossEncoder
-try:
-    # Using a fast, optimized re-ranker for real-time synthesis
-    RERANKER = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device='cpu')
-except Exception as re_e:
-    print(f"Reranker init error: {re_e}")
-    RERANKER = None
+import threading
+
+RERANKER = None
+
+def init_reranker():
+    global RERANKER
+    try:
+        print("Starting background download of CrossEncoder model...")
+        # Using a fast, optimized re-ranker for real-time synthesis
+        RERANKER = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device='cpu')
+        print("CrossEncoder model loaded successfully.")
+    except Exception as re_e:
+        print(f"Reranker init error: {re_e}")
+
+# Initialize in a background thread so it doesn't block Render from detecting the port
+threading.Thread(target=init_reranker, daemon=True).start()
 
 def get_contextual_retriever(query):
     # Increase k to 10 to give the re-ranker a better selection pool
