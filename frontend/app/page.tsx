@@ -1883,8 +1883,8 @@ export default function ChatbotDashboard() {
                   </div>
 
                   {/* Centered Input Box */}
-                  <div className="w-full max-w-3xl mb-6">
-                    <div className="relative flex items-end bg-white dark:bg-[#12121a] border border-gray-200/60 dark:border-white/5 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] focus-within:ring-4 focus-within:ring-amber-500/5 focus-within:border-amber-500/20 transition-all duration-500">
+                  <div className="w-full max-w-3xl mb-6 px-4 sm:px-0">
+                    <div className="relative flex items-end bg-white dark:bg-[#12121a] border border-gray-200/60 dark:border-white/5 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.05)] sm:shadow-[0_20px_50px_rgba(0,0,0,0.1)] focus-within:ring-2 focus-within:ring-amber-500/20 transition-all duration-500">
                       <div className="relative">
                         <button
                           onClick={() => setIsUploadMenuOpen(!isUploadMenuOpen)}
@@ -2038,7 +2038,7 @@ export default function ChatbotDashboard() {
                   <div key={index} className={`flex gap-4 sm:gap-6 group animate-fade-in-up ${msg.role === 'user' ? 'flex-row-reverse' : ''}`} style={{ animationDuration: '0.4s' }}>
 
                     {/* Avatar */}
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm
                       ${msg.role === 'user'
                         ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700'
                         : 'bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-purple-900/40 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30 shadow-[0_0_15px_rgba(251,191,36,0.1)] dark:shadow-[0_0_15px_rgba(251,191,36,0.05)]'}`}
@@ -2047,7 +2047,7 @@ export default function ChatbotDashboard() {
                     </div>
 
                     {/* Message Bubble */}
-                    <div className={`flex flex-col max-w-[85%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                    <div className={`flex flex-col max-w-[90%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                       <div className="flex items-center gap-2 mb-1.5 px-1">
                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                           {msg.role === 'user' ? (user?.username || 'You') : 'Krysha'}
@@ -2057,10 +2057,10 @@ export default function ChatbotDashboard() {
                         </span>
                       </div>
 
-                      <div className={`px-6 py-5 rounded-[2rem] text-[15px] leading-relaxed whitespace-pre-wrap transition-all duration-300 shadow-sm
+                      <div className={`px-4 py-3 sm:px-6 sm:py-5 rounded-2xl sm:rounded-[2rem] text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-wrap transition-all duration-300 shadow-sm
                         ${msg.role === 'user'
-                          ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-tr-md shadow-xl shadow-gray-900/10 dark:shadow-white/5'
-                          : 'bg-white dark:bg-[#1a1a24] text-gray-800 dark:text-gray-100 rounded-tl-md border border-gray-100 dark:border-white/[0.03] group-hover:border-amber-500/20 group-hover:shadow-[0_10px_40px_rgba(251,191,36,0.05)]'}`}
+                          ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-tr-sm sm:rounded-tr-md shadow-xl shadow-gray-900/10 dark:shadow-white/5'
+                          : 'bg-white dark:bg-[#1a1a24] text-gray-800 dark:text-gray-100 rounded-tl-sm sm:rounded-tl-md border border-gray-100 dark:border-white/[0.03] group-hover:border-amber-500/20 group-hover:shadow-[0_10px_40px_rgba(251,191,36,0.05)]'}`}
                       >
                         {editingIndex === index ? (
                           <div className="flex flex-col gap-3 min-w-[200px] sm:min-w-[400px]">
@@ -2142,9 +2142,9 @@ export default function ChatbotDashboard() {
 
           {/* Input Area - Only visible when chat has history */}
           {currentChatId && chatHistory.length > 0 && (
-            <div className="p-4 sm:p-6 bg-gradient-to-t from-[#f8f9fa] via-[#f8f9fa] to-transparent dark:from-[#0a0a0f] dark:via-[#0a0a0f] dark:to-transparent absolute bottom-0 left-0 right-0 z-20 animate-fade-in-up">
+            <div className="p-3 pb-5 sm:p-6 bg-white dark:bg-[#0a0a0f] sm:bg-gradient-to-t sm:from-[#f8f9fa] sm:via-[#f8f9fa] sm:to-transparent sm:dark:from-[#0a0a0f] sm:dark:via-[#0a0a0f] sm:dark:to-transparent absolute bottom-0 left-0 right-0 z-20 animate-fade-in-up border-t border-gray-100 dark:border-white/5 sm:border-none">
               <div className="max-w-4xl mx-auto">
-                <div className="relative flex items-end bg-white dark:bg-[#161622] border border-gray-200 dark:border-white/10 rounded-3xl shadow-lg dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-amber-500/20 focus-within:border-amber-500/30 transition-all duration-300">
+                <div className="relative flex items-end bg-gray-100/80 dark:bg-[#161622] sm:bg-white sm:dark:bg-[#161622] border border-transparent sm:border-gray-200 sm:dark:border-white/10 rounded-3xl sm:rounded-3xl shadow-none sm:shadow-lg dark:sm:shadow-[0_4px_30px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-amber-500/20 transition-all duration-300">
 
                   <div className="relative">
                     <button
