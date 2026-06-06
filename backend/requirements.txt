@@ -3,6 +3,7 @@ fastapi
 uvicorn
 python-jose[cryptography]
 passlib[bcrypt]
+bcrypt==3.2.0
 
 # Core LLM & Embeddings
 # Removed heavy local ML models (torch, sentence-transformers) to fit in 512MB RAM
