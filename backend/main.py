@@ -677,7 +677,7 @@ app = FastAPI(title="Mahabharata Bot API", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # Allow all origins for Render deployment, or specify your frontend URL
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
