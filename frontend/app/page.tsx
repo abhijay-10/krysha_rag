@@ -2345,7 +2345,7 @@ export default function ChatbotDashboard() {
             <div className="fixed inset-0 z-[250] bg-[#050508] p-4 lg:p-6 flex flex-col lg:flex-row gap-4 lg:gap-6 animate-fade-in font-sans h-screen w-screen overflow-hidden">
               
               {/* Left Panel: Voice Sanctuary UI */}
-              <div className="relative w-full lg:w-[40%] rounded-[2rem] border border-white/5 bg-[#0a0a10] overflow-hidden flex flex-col flex-shrink-0 h-full shadow-2xl">
+              <div className="relative w-full lg:w-[40%] rounded-[2rem] border border-white/5 bg-[#0a0a10] overflow-hidden flex flex-col flex-shrink-0 h-[45vh] lg:h-full shadow-2xl">
                 {/* Background Glow */}
                 <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none"></div>
 
@@ -2373,7 +2373,7 @@ export default function ChatbotDashboard() {
                     </div>
                   </div>
 
-                  <div className="mt-32 text-center">
+                  <div className="mt-8 lg:mt-32 text-center">
                     <h2 className="text-2xl sm:text-3xl font-bold text-amber-500 tracking-wide">
                       {voiceState === "listening" ? "Listening..." : 
                        voiceState === "thinking" ? "Reflecting..." : 
@@ -2387,7 +2387,7 @@ export default function ChatbotDashboard() {
                 </div>
                 
                 {/* Bottom Info Pill */}
-                <div className="p-8 z-10 mt-auto relative flex justify-center">
+                <div className="p-4 lg:p-8 z-10 mt-auto relative flex justify-center">
                   <div className="rounded-full border border-white/10 bg-[#15151e]/80 backdrop-blur-md py-4 px-6 flex items-center justify-center gap-4 shadow-lg shadow-black/50">
                     <p className="text-sm text-gray-300 leading-snug font-medium text-center">Speak from your heart,<br/>I'm here to listen and guide you.</p>
                   </div>
