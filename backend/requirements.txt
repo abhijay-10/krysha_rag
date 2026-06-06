@@ -5,11 +5,7 @@ python-jose[cryptography]
 passlib[bcrypt]
 
 # Core LLM & Embeddings
-sentence-transformers
-torch
-transformers
-accelerate
-
+# Removed heavy local ML models (torch, sentence-transformers) to fit in 512MB RAM
 # LangChain Ecosystem
 langchain
 langchain-core

@@ -41,17 +41,10 @@ RERANKER = None
 
 def init_reranker():
     global RERANKER
-    try:
-        print("Starting background download of CrossEncoder model...")
-        from sentence_transformers import CrossEncoder
-        # Using a fast, optimized re-ranker for real-time synthesis
-        RERANKER = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device='cpu')
-        print("CrossEncoder model loaded successfully.")
-    except Exception as re_e:
-        print(f"Reranker init error: {re_e}")
+    pass # Disabled PyTorch CrossEncoder due to Render 512MB Free Tier RAM limits
 
 # Delay initialization in a background thread so it doesn't block Render from detecting the port
-threading.Timer(5.0, init_reranker).start()
+# threading.Timer(5.0, init_reranker).start()
 
 def get_contextual_retriever(query):
     db = get_lazy_db()
