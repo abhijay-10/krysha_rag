@@ -22,7 +22,7 @@ langchain-groq
 qdrant-client
 
 # Utilities
-pydantic
+pydantic[email]
 pypdf
 streamlit
 requests
