@@ -1021,7 +1021,7 @@ export default function ChatbotDashboard() {
           </div>
 
           {/* First Section: Hero (Refined Mesh Gradient Style - Theme Aware) */}
-          <div className="flex min-h-screen w-full relative overflow-hidden items-center justify-center bg-[#fcfdfe] dark:bg-[#0a0515] transition-colors duration-500">
+          <div className="flex min-h-[100svh] w-full relative overflow-hidden items-start lg:items-center justify-center bg-[#fcfdfe] dark:bg-[#0a0515] transition-colors duration-500 pt-10 pb-20 lg:py-0">
             {/* Background Effects */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               {/* Top Mesh */}
@@ -1648,8 +1648,13 @@ export default function ChatbotDashboard() {
           }}
         />
 
+        {/* Mobile Sidebar Backdrop */}
+        {isSidebarOpen && (
+          <div className="fixed inset-0 bg-black/60 z-[90] md:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+        )}
+
         {/* Sidebar */}
-        <div className={`${isSidebarOpen ? 'w-72' : 'w-0'} flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
+        <div className={`${isSidebarOpen ? 'w-[85vw] sm:w-72' : 'w-0'} absolute md:relative z-[100] md:z-10 h-full flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
           <div className="p-4">
             <button
               onClick={handleNewChat}
