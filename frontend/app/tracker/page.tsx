@@ -113,7 +113,7 @@ export default function SpiritualTracker() {
     if (!selectedDate) return;
     try {
       const token = localStorage.getItem("token");
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com";
 
       // 1. Fetch Today's Logs
       const resLog = await fetch(`${apiBase}/tracker/today?date=${selectedDate}`, {
@@ -182,7 +182,7 @@ export default function SpiritualTracker() {
     setSaveSuccess(false);
     try {
       const token = localStorage.getItem("token");
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com";
 
       const payload = {
         date: date,

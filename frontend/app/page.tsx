@@ -295,7 +295,7 @@ export default function ChatbotDashboard() {
       const historyPayload = existingChat ? existingChat.history.map(m => ({ role: m.role, content: m.content })) : [];
 
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/ask`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -480,7 +480,7 @@ export default function ChatbotDashboard() {
   useEffect(() => {
     if (user) {
       const token = localStorage.getItem("token");
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/sessions`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/sessions`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -511,7 +511,7 @@ export default function ChatbotDashboard() {
   // Load knowledge sources
   useEffect(() => {
     if (user) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/knowledge/list`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/knowledge/list`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -550,7 +550,7 @@ export default function ChatbotDashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/sessions/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/sessions/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -621,7 +621,7 @@ export default function ChatbotDashboard() {
       const historyPayload = existingChat ? existingChat.history.map(m => ({ role: m.role, content: m.content })) : [];
 
       const token = localStorage.getItem("token");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/ask`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+          const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com";
           const res = await fetch(`${apiBase}/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (token: string) => {
     localStorage.setItem("token", token);
     // Refresh and persist user data
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/me`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://krysha-rag-backend.onrender.com"}/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
