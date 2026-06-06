@@ -6,47 +6,52 @@ import os
 # import ollama
 import re
 import random
+import threading
 from dotenv import load_dotenv
 from qdrant_db import get_db
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
-# Move these imports to the try block so they don't crash startup if missing
 
 load_dotenv()
 
 # --- STAGE 1: GLOBAL RESOURCES ---
-embeddings = HuggingFaceEndpointEmbeddings(
-    model="BAAI/bge-m3",
-    huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
-)
+_embeddings_instance = None
 _db_instance = None
+
+def get_lazy_embeddings():
+    global _embeddings_instance
+    if _embeddings_instance is None:
+        print("Initializing Embeddings model...")
+        from langchain_huggingface import HuggingFaceEndpointEmbeddings
+        _embeddings_instance = HuggingFaceEndpointEmbeddings(
+            model="BAAI/bge-m3",
+            huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN")
+        )
+    return _embeddings_instance
 
 def get_lazy_db():
     global _db_instance
     if _db_instance is None:
         print("Initializing Qdrant DB connection and embedding model...")
-        _db_instance = get_db(embeddings)
+        _db_instance = get_db(get_lazy_embeddings())
     return _db_instance
 MODEL = "mistral:latest"
 from prompt_router import get_modular_prompt
 
 # 🛡️ DIVINE RE-RANKER: The high-precision filter for 37,800+ chunks
-from sentence_transformers import CrossEncoder
-import threading
-
 RERANKER = None
 
 def init_reranker():
     global RERANKER
     try:
         print("Starting background download of CrossEncoder model...")
+        from sentence_transformers import CrossEncoder
         # Using a fast, optimized re-ranker for real-time synthesis
         RERANKER = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', device='cpu')
         print("CrossEncoder model loaded successfully.")
     except Exception as re_e:
         print(f"Reranker init error: {re_e}")
 
-# Initialize in a background thread so it doesn't block Render from detecting the port
-threading.Thread(target=init_reranker, daemon=True).start()
+# Delay initialization in a background thread so it doesn't block Render from detecting the port
+threading.Timer(5.0, init_reranker).start()
 
 def get_contextual_retriever(query):
     db = get_lazy_db()
