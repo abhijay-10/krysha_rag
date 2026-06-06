@@ -1021,7 +1021,7 @@ export default function ChatbotDashboard() {
           </div>
 
           {/* First Section: Hero (Refined Mesh Gradient Style - Theme Aware) */}
-          <div className="flex min-h-[100svh] w-full relative overflow-hidden items-start lg:items-center justify-center bg-[#fcfdfe] dark:bg-[#0a0515] transition-colors duration-500 pt-10 pb-20 lg:py-0">
+          <div className="flex min-h-screen w-full relative overflow-hidden items-center justify-center bg-[#fcfdfe] dark:bg-[#0a0515] transition-colors duration-500">
             {/* Background Effects */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               {/* Top Mesh */}
@@ -1648,13 +1648,8 @@ export default function ChatbotDashboard() {
           }}
         />
 
-        {/* Mobile Sidebar Backdrop */}
-        {isSidebarOpen && (
-          <div className="fixed inset-0 bg-black/60 z-[90] md:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-        )}
-
         {/* Sidebar */}
-        <div className={`${isSidebarOpen ? 'w-[85vw] sm:w-72' : 'w-0'} absolute md:relative z-[100] md:z-10 h-full flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
+        <div className={`${isSidebarOpen ? 'w-72' : 'w-0'} flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
           <div className="p-4">
             <button
               onClick={handleNewChat}
@@ -1781,8 +1776,8 @@ export default function ChatbotDashboard() {
               </button>
             </div>
 
-            {/* Persona Selector */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex bg-gray-100/80 dark:bg-black/40 backdrop-blur-sm rounded-full p-1 border border-gray-200/50 dark:border-white/5">
+            {/* Persona Selector - Desktop */}
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-100/80 dark:bg-black/40 backdrop-blur-sm rounded-full p-1 border border-gray-200/50 dark:border-white/5">
               <button
                 onClick={() => setMode("neutral")}
                 className={`px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${mode === "neutral" ? "bg-white dark:bg-[#1a1a24] text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
@@ -1797,14 +1792,14 @@ export default function ChatbotDashboard() {
               </button>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={toggleVoiceSanctuary}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/25 text-amber-600 dark:text-amber-400 flex items-center gap-2 text-xs font-black uppercase tracking-wider transition-all shadow-sm shadow-amber-500/5 hover:scale-105 active:scale-95 duration-300"
+                className="px-3 py-2 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/25 text-amber-600 dark:text-amber-400 flex items-center gap-2 text-xs font-black uppercase tracking-wider transition-all shadow-sm shadow-amber-500/5 hover:scale-105 active:scale-95 duration-300"
                 title="Enter Real-time Continuous Voice Sanctuary"
               >
                 <Mic size={14} className="animate-pulse text-amber-500" />
-                <span>Voice Sanctuary</span>
+                <span className="hidden sm:inline">Voice Sanctuary</span>
               </button>
 
               <div className="relative">
@@ -1845,6 +1840,24 @@ export default function ChatbotDashboard() {
             </div>
           </div>
         </div>
+
+          {/* Mobile Persona Selector (Visible only on small screens) */}
+          <div className="md:hidden flex justify-center w-full px-4 py-3 bg-white/50 dark:bg-[#0a0a0f]/50 border-b border-gray-200/50 dark:border-white/5 z-20 backdrop-blur-md">
+            <div className="flex w-full max-w-[240px] bg-gray-100/80 dark:bg-black/40 rounded-full p-1 border border-gray-200/50 dark:border-white/5">
+              <button
+                onClick={() => setMode("neutral")}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ${mode === "neutral" ? "bg-white dark:bg-[#1a1a24] text-gray-900 dark:text-white shadow-sm" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
+              >
+                Scholar
+              </button>
+              <button
+                onClick={() => setMode("krishna")}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ${mode === "krishna" ? "bg-gradient-to-r from-amber-100 to-orange-50 dark:from-amber-900/40 dark:to-orange-900/20 text-orange-700 dark:text-orange-300 shadow-sm" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
+              >
+                Lord Krishna
+              </button>
+            </div>
+          </div>
 
           {/* Background Ambient Glows */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
