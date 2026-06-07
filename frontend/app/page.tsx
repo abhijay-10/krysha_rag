@@ -169,6 +169,7 @@ export default function ChatbotDashboard() {
   ];
 
   const mobilePlaceholders = [
+    "What's on your mind?",
     "Ask anything...",
     "Seek guidance...",
     "Explore..."
@@ -1787,7 +1788,7 @@ export default function ChatbotDashboard() {
               >
                 <Menu size={20} />
               </button>
-              <div className="font-bold text-xl flex items-center gap-2">
+              <div className="font-bold text-xl flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500 dark:from-amber-300 dark:to-orange-400 tracking-tight">
                   Krysha AI
                 </span>
@@ -1912,7 +1913,7 @@ export default function ChatbotDashboard() {
                   </div>
 
                   {/* Centered Input Box */}
-                  <div className="w-full max-w-3xl mb-6 px-4 sm:px-0">
+                  <div className="w-full max-w-3xl mb-6 px-4 sm:px-0 hidden md:block">
                     <div className="relative flex items-end bg-white dark:bg-[#12121a] border border-gray-200/60 dark:border-white/5 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.05)] sm:shadow-[0_20px_50px_rgba(0,0,0,0.1)] focus-within:ring-2 focus-within:ring-amber-500/20 transition-all duration-500">
                       <div className="relative">
                         <button
@@ -2169,9 +2170,9 @@ export default function ChatbotDashboard() {
             </div>
           </div>
 
-          {/* Input Area - Only visible when chat has history */}
-          {currentChatId && chatHistory.length > 0 && (
-            <div className="p-3 pb-5 sm:p-6 bg-white dark:bg-[#0a0a0f] sm:bg-gradient-to-t sm:from-[#f8f9fa] sm:via-[#f8f9fa] sm:to-transparent sm:dark:from-[#0a0a0f] sm:dark:via-[#0a0a0f] sm:dark:to-transparent absolute bottom-0 left-0 right-0 z-20 animate-fade-in-up border-t border-gray-100 dark:border-white/5 sm:border-none">
+          {/* Input Area - Visible when chat has history, or ALWAYS visible on mobile */}
+          {true && (
+            <div className={`p-3 pb-5 sm:p-6 bg-white dark:bg-[#0a0a0f] sm:bg-gradient-to-t sm:from-[#f8f9fa] sm:via-[#f8f9fa] sm:to-transparent sm:dark:from-[#0a0a0f] sm:dark:via-[#0a0a0f] sm:dark:to-transparent absolute bottom-0 left-0 right-0 z-20 animate-fade-in-up border-t border-gray-100 dark:border-white/5 sm:border-none ${(!currentChatId || chatHistory.length === 0) ? 'block md:hidden' : 'block'}`}>
               <div className="max-w-4xl mx-auto">
                 <div className="relative flex items-end bg-gray-100/80 dark:bg-[#161622] sm:bg-white sm:dark:bg-[#161622] border border-transparent sm:border-gray-200 sm:dark:border-white/10 rounded-3xl sm:rounded-3xl shadow-none sm:shadow-lg dark:sm:shadow-[0_4px_30px_rgba(0,0,0,0.5)] focus-within:ring-2 focus-within:ring-amber-500/20 transition-all duration-300">
 
