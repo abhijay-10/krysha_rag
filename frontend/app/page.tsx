@@ -442,6 +442,12 @@ export default function ChatbotDashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  }, []);
+
   // Manage welcome screen based on auth status
   useEffect(() => {
     if (!authLoading) {
@@ -987,7 +993,7 @@ export default function ChatbotDashboard() {
   };
 
   return (
-    <div className={`relative h-screen w-full overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`relative h-[100dvh] w-full overflow-hidden ${isDarkMode ? 'dark' : ''}`}>
       {/* Welcome Screen Overlay */}
       {showWelcome && (
         <div className={`absolute inset-0 z-[100] transition-all duration-1000 ease-in-out ${fadeWelcome ? 'opacity-0 scale-110 pointer-events-none' : 'opacity-100 scale-100'} bg-[#fcfdfe] dark:bg-[#050508] overflow-y-auto scroll-smooth`}>
@@ -1648,8 +1654,14 @@ export default function ChatbotDashboard() {
           }}
         />
 
+        {/* Mobile Sidebar Overlay */}
+        <div 
+          className={`md:hidden fixed inset-0 bg-black/20 dark:bg-black/40 z-40 transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
+          onClick={() => setSidebarOpen(false)} 
+        />
+
         {/* Sidebar */}
-        <div className={`${isSidebarOpen ? 'w-72' : 'w-0'} flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 relative z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
+        <div className={`absolute md:relative z-50 md:z-10 h-full ${isSidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-72 md:translate-x-0 md:w-0'} flex-shrink-0 bg-white dark:bg-[#12121a] transition-all duration-500 overflow-hidden flex flex-col border-r border-gray-200 dark:border-white/5 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]`}>
           <div className="p-4">
             <button
               onClick={handleNewChat}
@@ -1867,7 +1879,7 @@ export default function ChatbotDashboard() {
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-8 scroll-smooth z-10 relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" id="chat-container">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-8 scroll-smooth z-10 relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" id="chat-container">
             <div className="max-w-4xl mx-auto flex flex-col gap-6 pb-20">
 
               {!currentChatId || chatHistory.length === 0 ? (
