@@ -170,8 +170,8 @@ export default function ChatbotDashboard() {
 
   const mobilePlaceholders = [
     "Ask anything...",
-    "Seek guidance from ancient wisdom...",
-    "Ask about Dharma or Inner Peace..."
+    "Seek guidance...",
+    "Explore..."
   ];
 
   const [isMobile, setIsMobile] = useState(false);
