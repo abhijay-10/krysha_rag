@@ -158,7 +158,7 @@ export default function ChatbotDashboard() {
   const [isListening, setIsListening] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  const placeholders = [
+  const desktopPlaceholders = [
     "Ask anything...",
     "Share your thoughts with Krysha...",
     "Seek guidance from ancient wisdom...",
@@ -167,6 +167,15 @@ export default function ChatbotDashboard() {
     "Explore the depths of sacred texts...",
     "Ask about Dharma or Inner Peace..."
   ];
+
+  const mobilePlaceholders = [
+    "Ask anything...",
+    "Seek guidance from ancient wisdom...",
+    "Ask about Dharma or Inner Peace..."
+  ];
+
+  const [isMobile, setIsMobile] = useState(false);
+  const activePlaceholders = isMobile ? mobilePlaceholders : desktopPlaceholders;
 
   // Unified State for all Chats
   const [savedChats, setSavedChats] = useState<ChatSession[]>([]);
@@ -437,14 +446,22 @@ export default function ChatbotDashboard() {
   // Cycle placeholders
   useEffect(() => {
     const interval = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+      setPlaceholderIndex((prev) => prev + 1);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setSidebarOpen(false);
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        const mobile = window.innerWidth < 768;
+        setIsMobile(mobile);
+        if (mobile) setSidebarOpen(false);
+      };
+      
+      handleResize(); // Initial check
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
 
@@ -1962,7 +1979,7 @@ export default function ChatbotDashboard() {
                             setShowSuggestions(true);
                           }
                         }}
-                        placeholder={isListening ? "Listening..." : placeholders[placeholderIndex]}
+                        placeholder={isListening ? "Listening..." : activePlaceholders[placeholderIndex % activePlaceholders.length]}
                         className="w-full bg-transparent py-4 px-2 text-gray-800 dark:text-gray-100 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-lg resize-none max-h-[200px] scrollbar-none transition-all duration-500 disabled:opacity-50"
                         rows={1}
                       />
@@ -2225,7 +2242,7 @@ export default function ChatbotDashboard() {
                         setShowSuggestions(true);
                       }
                     }}
-                    placeholder={isListening ? "Listening..." : placeholders[placeholderIndex]}
+                    placeholder={isListening ? "Listening..." : activePlaceholders[placeholderIndex % activePlaceholders.length]}
                     className="w-full bg-transparent py-4 px-2 text-gray-800 dark:text-gray-100 outline-none placeholder-gray-400 dark:placeholder-gray-500 text-[15px] resize-none max-h-[150px] scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-700 transition-all duration-500 disabled:opacity-50"
                     disabled={isLoading}
                     rows={1}
